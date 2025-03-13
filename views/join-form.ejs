@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Club: Join</title>
+  </head>
+  <body>
+    <h1>Join The Club</h1>
+    <form action="/join" method="POST">
+      <div>
+        <label for="username">Username/Email:</label>
+        <input type="email" id="username" name="username" required />
+      </div>
+      <br />
+      <div>
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="password" required />
+      </div>
+      <br />
+      <div>
+        <label for="secretPasscode">Secret Passcode:</label>
+        <input type="text" id="secretPasscode" name="secretPasscode" required />
+      </div>
+      <br />
+      <button type="submit">Join</button>
+    </form>
+    <br />
+    <button type="button" onclick="window.location.href='/'">
+      Back to Main Page
+    </button>
+    <p><%= message %></p>
+  </body>
+</html>

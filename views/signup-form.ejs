@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Club: Sign Up</title>
+  </head>
+  <body>
+    <form action="/sign-up" method="POST">
+      <h1>Sign Up</h1>
+      <div>
+        <label for="firsName">First Name:</label>
+        <input type="text" name="firstName" id="firstName" required />
+      </div>
+      <br>
+      <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" name="lastName" id="lastName" required />
+      </div>
+      <br>
+      <div>
+        <label for="username">
+          Username/Email (Your username must be the email address you are using
+          for this account):
+        </label>
+        <input type="email" name="username" id="username" required />
+      </div>
+      <br>
+      <div>
+        <label for="password">Create Password:</label>
+        <input type="password" name="password" id="password" required />
+        <ul>
+          <li>Password must have a minimum of 8 characters</li>
+          <li>Password must have at least one lowercase character</li>
+          <li>Password must have at least one uppercase character</li>
+          <li>Password must have at least one number</li>
+          <li>Password must have at least one special character (@, #, $, etc.)</li>
+        </ul>
+      </div>
+      <br>
+      <div>
+        <label for="passwordConfirmation">Confirm Password:</label>
+        <input
+          type="password"
+          name="passwordConfirmation"
+          id="passwordConfirmation"
+          required
+        />
+      </div>
+      <br>
+      <div>
+        <label for="memStatus">Membership Status:</label>
+        <input type="text" name="memStatus" id="memStatus" value="Non-Member"  readonly />
+      </div>
+      <br>
+      <button type="submit">Sign Up</button>
+    </form>
+    <br>
+    <button type="button" onclick="window.location.href='/'">Back to Main Page</button>
+    <p><%= message %></p>
+  </body>
+</html>

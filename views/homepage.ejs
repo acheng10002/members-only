@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Club: Home</title>
+  </head>
+  <body>
+    <h1>The Clubhouse</h1>
+    <p><%= message %></p>
+    <br />
+    <!-- if signedUp is false, shows Sign Up button -->
+    <% if (!signedUp) { %>
+    <div>
+      <button type="button" onclick="window.location.href='/sign-up'">
+        Sign Up
+      </button>
+    </div>
+    <br />
+    <% } %>
+    <!-- if joined is false, shows Join The Club button -->
+    <% if (!joined) { %>
+    <div>
+        <button type="button" onclick="window.location.href='/join'">
+            Join The Club
+        </button>
+    </div>
+    <br />
+    <% } %>
+    <div>
+        <!-- uses req.user object to check if member is logged in 
+         if user object exists, shows Log Out button -->
+        <% if (user) { %>
+            <button type="button" onclick="window.location.href='/logout'">
+                Log Out
+            </button>
+        <% } else { %>
+            <!-- if user object does not exists, shows Log In button -->
+            <button type="button" onclick="window.location.href='/login'">
+                Log In
+            </button>
+        <% } %>
+    </div>
+  </body>
+</html>
