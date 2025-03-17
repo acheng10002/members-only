@@ -2,6 +2,7 @@
 const { validationResult } = require("express-validator");
 // imports database queries
 const db = require("../models/queries");
+const { getUserContext } = require("../models/helpers");
 
 // handles POST request for signup
 async function signupPost(req, res) {
@@ -20,12 +21,16 @@ async function signupPost(req, res) {
     /* calls createUser from queries.js, passing it user details 
     inserts a new user into the members table */
     await db.createUser(firstName, lastName, username, password);
-    // renders homepage.ejs with dynamic data
+    const userContext = await getUserContext(username);
+    /* renders homepage.ejs with dynamic data 
+    9. NON-MEMBERS CANNOT SEE AUTHOR AND DATE OF EACH MESSAGE */
     res.render("homepage", {
       message: "You have successfully signed up!", // a success message
-      signedUp: true, // successful signup flag for UI logic
-      joined: false, // user has not joined the club yet
-      user: null, // no user session set yet (they need to log in)
+      // no user session set yet (they need to log in)
+      user: null,
+      ...userContext,
+      // successful signup flag for UI logic
+      // user has not joined the club yet
     });
     /* if db.createUser fails (e.g. duplicate username, DB connection issue), 
   logs the error and sends a 500 response */
@@ -35,13 +40,14 @@ async function signupPost(req, res) {
   }
 }
 
-// handles POST request for user joining club
+/* handles POST request for user joining club 
+4. MEMBERS CAN JOIN THE CLUB BY ENTERING A SECRET PASSCODE */
 async function joinPost(req, res) {
   // destructures/extracts user input (form data) from request body
   const { username, password, secretPasscode } = req.body;
   try {
     /* calls findUserForJoining from queries.js, passing it user details */
-    const foundUser = await db.findUserForJoining(username, password);
+    const foundUser = await db.findUserForClubOrAdminAccess(username, password);
     /* if no user object found, return 401 response, unauthorized 
     user is not authenticated and request is missing or has invalid credentials */
     if (!foundUser) {
@@ -49,7 +55,7 @@ async function joinPost(req, res) {
     }
     /* if user secretPasscode input is wrong, return 403 response, forbidden 
     user is authenticated but does not have permission to access the resource */
-    if (secretPasscode !== "open sesame") {
+    if (secretPasscode !== process.env.SECRET_PASSCODE.replace(/_/g, " ")) {
       return res.status(403).send("Incorrect secret passcode");
     }
     // calls grantUserMembership from queries, passing it username
@@ -60,12 +66,13 @@ async function joinPost(req, res) {
     if (!admissionSuccess) {
       return res.status(500).send("Failed to update membership status");
     }
+    const userContext = await getUserContext(username);
     // renders homepage.ejs with dynamic data
     res.render("homepage", {
       message: "You have successfully joined the club!",
-      signedUp: true,
-      joined: true,
+      // user has become a member but has not logged in
       user: null,
+      ...userContext,
     });
     // logs the error and sends a 500 response
   } catch (error) {
@@ -80,12 +87,14 @@ function loginGet(req, res) {
 }
 
 // renders homepage for user who has signed up, has joined the club, and has logged in
-function loginSuccessGet(req, res) {
+async function loginSuccessGet(req, res) {
+  const userContext = await getUserContext(req.user.username);
+  console.log(req.user);
   res.render("homepage", {
     message: "You successfully logged in.",
-    signedUp: true,
-    joined: true,
+    // req.user is available bc they're logged in
     user: req.user,
+    ...userContext,
   });
 }
 
@@ -98,12 +107,13 @@ function loginFailureGet(req, res) {
 }
 
 // renders homepage for user who has signed up, has joined the club, and has logged out
-function logoutGet(req, res) {
+async function logoutGet(req, res) {
+  const userContext = await getUserContext(req.user.username);
   res.render("homepage", {
     message: "You successfully logged out.",
-    signedUp: true,
-    joined: true,
+    // user not logged in
     user: null,
+    ...userContext,
   });
 }
 

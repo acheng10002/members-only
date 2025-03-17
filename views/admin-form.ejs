@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Club: Admin Access</title>
+  </head>
+  <body>
+    <h1>Get Admin Access</h1>
+    <form action="/login-success/admin" method="POST">
+      <div>
+        <label for="adminPasscode">Secret Admin Passcode:</label>
+        <input type="text" id="adminPasscode" name="adminPasscode" required />
+      </div>
+      <br />
+      <button type="submit">Submit</button>
+      <button type="button" onclick="window.location.href='/'">
+        Back to Main Page
+      </button>
+    </form>
+    <br />
+    <p><%= message %></p>
+  </body>
+</html>

@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>Club: Message Form</title>
+  </head>
+  <body>
+    <h1>Message Form</h1>
+    <!--form will make a post request and action specifies the URL where the
+    form data should be sent, server at /new will process the request -->
+    <% if (user) { %>
+        <form method="POST" action="/new-message">
+            <div>
+                <label for="title">Message Title:</label>
+                <input type="text" id="title" name="title" required />
+            </div>
+            <br />
+            <div>
+                <label for="text">Message Text:</label>
+                <textarea id="text" name="text" rows="10" cols="50" required /></textarea>
+            </div>
+            <br />
+            <div>
+                <button type="submit">Create my message</button>
+            </div>
+        </form>
+    <% } else { %>
+        <p>You are not authorized to create a message. Please ensure you are signed up and have joined the club.</p>
+    <% } %>
+  </body>
+</html>

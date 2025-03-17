@@ -8,7 +8,6 @@ and logout (just GET) */
 const authController = require("../controllers/authController");
 // middleware that validates and sanitizes user input before the request reaches .signupPost
 const signupValidation = require("../middlewares/signupValidation");
-// const { isAuth } = require("../middlewares/loginAuthentication");
 
 // GET ROUTES
 // handles GET request for login
@@ -28,7 +27,8 @@ authRouter.post("/sign-up", signupValidation, authController.signupPost);
 the secretPasscode */
 authRouter.post("/join", authController.joinPost);
 
-// POST request is sent to /login (user submits login form)
+/* POST request is sent to /login (user submits login form) 
+5. LOGIN-FORM CREATED USING PASSPORT.JS */
 authRouter.post(
   "/login",
   // passport.authenticate("local") executes the local strategy (verifyCallback)

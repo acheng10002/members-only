@@ -1,3 +1,4 @@
+// loads environment variables
 require("dotenv").config();
 // creates and exports a PostgreSQL connection pool
 const { Pool } = require("pg");

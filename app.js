@@ -80,11 +80,14 @@ app.use((req, res, next) => {
 
 // ROUTES
 // imports route handlers for member actions and authentication
-const memberRouter = require("./routes/memberRouter");
+const membersRouter = require("./routes/membersRouter");
+const messagesRouter = require("./routes/messagesRouter");
 const authRouter = require("./routes/authRouter");
 
-// defines / route and registers memberRouter middleware
-app.use("/", memberRouter);
+// defines / route and registers membersRouter middleware
+app.use("/", membersRouter);
+// defines / route and registers messagesRouter middleware
+app.use("/", messagesRouter);
 // defines / route and registers authRouter middleware
 app.use("/", authRouter);
 

@@ -7,37 +7,90 @@
     <h1>The Clubhouse</h1>
     <p><%= message %></p>
     <br />
+    <table border="1">
+      <thead>
+        <tr>
+          <% if (user) { %>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Added (Timestamp) </th>
+          <% } %>
+            <th>Title</th>
+            <th>Text</th>
+            <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (messages) { %>
+          <% messages.forEach(message => { %>
+            <tr>
+              <!-- 7. DISPLAY ALL MESSAGES ON HOME PAGE, ONLY SHOWING AUTHOR AND DATE TO MEMBERS -->
+              <% if (user) { %>
+                <td><%= message.first_name %></td>
+                <td><%= message.last_name  %></td>
+                <td><%= message.added %></td>
+              <% } %>
+                <td><%= message.title %></td>
+                <td><%= message.text %></td>
+                <% if (isAdmin && user) { %>
+                  <td>
+                    <form action="/message/<%= message.id ? message.id: 'missing_id' %>/delete" method="POST" style="display:inline;">
+                      <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer;">
+                        Delete
+                      </button>
+                    </form>
+                  </td>
+                <% } else { %>
+                  <td>None</td>
+                <% } %>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" style="text-align: center;">No messages found</td>"
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <br />
     <!-- if signedUp is false, shows Sign Up button -->
     <% if (!signedUp) { %>
-    <div>
       <button type="button" onclick="window.location.href='/sign-up'">
         Sign Up
       </button>
-    </div>
-    <br />
     <% } %>
     <!-- if joined is false, shows Join The Club button -->
-    <% if (!joined) { %>
-    <div>
-        <button type="button" onclick="window.location.href='/join'">
-            Join The Club
-        </button>
-    </div>
-    <br />
+    <% if (!hasJoined) { %>
+      <button type="button" onclick="window.location.href='/join'">
+        Join The Club
+      </button>
     <% } %>
-    <div>
-        <!-- uses req.user object to check if member is logged in 
-         if user object exists, shows Log Out button -->
-        <% if (user) { %>
-            <button type="button" onclick="window.location.href='/logout'">
-                Log Out
-            </button>
-        <% } else { %>
-            <!-- if user object does not exists, shows Log In button -->
-            <button type="button" onclick="window.location.href='/login'">
-                Log In
-            </button>
+    <!-- uses req.user object to check if member is logged in 
+    if user object exists, shows Log Out button 
+    6. SHOW LOGGED IN USER LINK TO NEW-MESSAGE-FORM -->
+    <% if (user) { %>
+      <div>
+        <a href="/new-message">
+          Create a new message
+        </a>
+      </div>
+      <br/>
+        <button type="button" onclick="window.location.href='/logout'">
+          Log Out
+        </button>
+        <% if (!isAdmin) { %>
+          <button type="button" onclick="window.location.href='/login-success/admin'">
+            Get Admin Access
+          </button>
         <% } %>
-    </div>
+    <% } else { %>
+      <!-- if user object does not exists, shows Log In button -->
+      <button type="button" onclick="window.location.href='/login'">
+        Log In
+      </button>
+      <!-- <button type="button" onclick="window.location.href='/'">
+        Back to Main Page
+      </button> -->
+    <% } %>
   </body>
 </html>

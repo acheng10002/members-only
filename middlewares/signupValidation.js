@@ -1,5 +1,8 @@
+// imports body function from middleware for validating and sanitizing request data in Express.js
 const { body } = require("express-validator");
 
+/* 3. SIGNUP-FORM FIELDS GETS SANITIZED AND VALIDATED WITH A CUSTOM VALIDATOR FOR THE 
+CONFIRMPASSWORD FIELD */
 const signupValidationRules = [
   // validates and sanitizes firstName
   body("firstName")
@@ -29,8 +32,7 @@ const signupValidationRules = [
     .isLength({ max: 255 })
     .withMessage("Username/Email cannot exceed 255 characters")
     .isEmail()
-    .withMessage("Invalid email format")
-    .normalizeEmail(), // sanitization: removes unnecessary dots in some domains
+    .withMessage("Invalid email format"),
 
   // validates password
   body("password")
