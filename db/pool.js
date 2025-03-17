@@ -1,13 +1,15 @@
 // loads environment variables
 require("dotenv").config();
-// creates and exports a PostgreSQL connection pool
+/* creates and exports a PostgreSQL connection pool 
+2. CONENCTS TO LOCAL POSTGRESQL DATABASE */
 const { Pool } = require("pg");
 
 module.exports = new Pool({
   // creates the pool connection to the db
   connectionString: process.env.DATABASE_URL,
 });
-/*
+
+/* 1. DATABASE MODELS 
 module.exports = new Pool({
   host: "localhost",
   user: "amycheng",
