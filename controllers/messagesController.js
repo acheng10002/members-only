@@ -29,10 +29,9 @@ async function newMessagePost(req, res) {
   }
 
   try {
-    console.log(req.user.username);
     const mem_id = await db.findMemIdByUsername(req.user.username);
     const added = new Date();
-    const id = await db.createMessage(title, text, added, mem_id.id);
+    const id = await db.createMessage(title, text, added, mem_id);
     if (!id) {
       return res.status(500).send("Failed to create message");
     }
@@ -53,7 +52,6 @@ async function newMessagePost(req, res) {
 async function deleteMessagePost(req, res) {
   // extracts id parameter from the request URL
   const messageId = req.params.id;
-  console.log(req.params.id);
 
   try {
     await db.deleteMessage(messageId);

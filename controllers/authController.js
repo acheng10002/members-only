@@ -89,7 +89,6 @@ function loginGet(req, res) {
 // renders homepage for user who has signed up, has joined the club, and has logged in
 async function loginSuccessGet(req, res) {
   const userContext = await getUserContext(req.user.username);
-  console.log(req.user);
   res.render("homepage", {
     message: "You successfully logged in.",
     // req.user is available bc they're logged in
