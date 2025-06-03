@@ -1,5 +1,6 @@
 // imports bcryptjs library for password hashing for Node.js
 const bcrypt = require("bcryptjs");
+const db = require("./queries");
 
 // for granting club or admin access
 async function comparePasswords(enteredPassword, storedHash) {
@@ -15,7 +16,6 @@ async function comparePasswords(enteredPassword, storedHash) {
 a user's signup status, their club join status, and their admin status */
 async function getUserContext(username) {
   try {
-    const db = require("./queries");
     const messages = await db.getAllMessages();
     const signedUp = await db.findSignupStatusByUsername(username);
     const hasJoined = await db.findJoinedStatusByUsername(username);

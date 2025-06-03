@@ -151,6 +151,7 @@ async function findMemberForLogin(username, password) {
       message: "You must join the club before logging in.",
     };
   }
+
   // compares plaintext input and stored hashed password using helper function
   const isMatch = await comparePasswords(password, user.hash);
   // if they do match, returns user object
