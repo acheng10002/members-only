@@ -7,10 +7,6 @@ const LocalStrategy = require("passport-local").Strategy;
 findUserByStatus fetches a user by username and mem_status */
 const { findMemberForLogin, findUserByStatus } = require("../models/queries");
 
-// imports database configuration
-const pool = require("../db/pool");
-const bcrypt = require("bcryptjs");
-
 /* verifyCallback - authentication logic function used by Passport.js when a
                     user tries to log in */
 const verifyCallback = async (username, password, done) => {

@@ -33,8 +33,8 @@ async function getAllMessages() {
 // creates a signed up user (not logged in) when there is a POST request for user signup
 async function createUser(firstName, lastName, username, password) {
   // hashes user's password with 10 salt rounds
-  // const saltRounds = 10;
-  const hash = await bcrypt.hash(password, 10);
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(password, saltRounds);
 
   /* runs SQL query against the PostgreSQL database to add a user 
     result - full response object, containing metadata like rowCount, command, rows */
@@ -92,6 +92,10 @@ async function findUserForClubOrAdminAccess(username, password) {
         "You are not signed up or are already a member. Please sign in or log in.",
     };
   }
+  if (!user.hash.startsWith("$2b$10$")) {
+    throw new Error("Unsupported hash version or config");
+  }
+
   // compares plaintext input and stored hashed password using helper function
   const isMatch = await comparePasswords(password, user.hash);
   // if they do match, returns user object
